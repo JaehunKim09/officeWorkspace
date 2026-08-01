@@ -147,7 +147,8 @@ function ValueIcon({ type }) {
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedNotice, setSelectedNotice] = useState(null);
-  const [sent, setSent] = useState(false);
+  const [formStatus, setFormStatus] = useState('idle');
+  const [formMessage, setFormMessage] = useState('');
 
   useEffect(() => {
     const closeWithEscape = (event) => {
@@ -171,10 +172,32 @@ export default function Home() {
     setMenuOpen(false);
   };
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
-    event.currentTarget.reset();
-    setSent(true);
+    const form = event.currentTarget;
+
+    setFormStatus('sending');
+    setFormMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form).entries())),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.message || '문의 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+      }
+
+      form.reset();
+      setFormStatus('success');
+      setFormMessage(result.message || '문의가 정상적으로 전송되었습니다.');
+    } catch (error) {
+      setFormStatus('error');
+      setFormMessage(error instanceof Error ? error.message : '문의 전송 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -404,13 +427,29 @@ export default function Home() {
           </div>
           <div className="contact-info">
             <span>EMAIL</span>
-            <a href="mailto:hello@nova.co.kr">hello@nova.co.kr</a>
+            <a href="mailto:kknuhet@naver.com">kknuhet@naver.com</a>
             <span>PHONE</span>
             <a href="tel:+82212345678">02. 1234. 5678</a>
           </div>
         </div>
 
-        <form className="contact-form" onSubmit={submit} onChange={() => setSent(false)}>
+        <form
+          className="contact-form"
+          onSubmit={submit}
+          onChange={() => {
+            if (formStatus !== 'sending') {
+              setFormStatus('idle');
+              setFormMessage('');
+            }
+          }}
+          aria-busy={formStatus === 'sending'}
+        >
+          <div className="form-honeypot" aria-hidden="true">
+            <label>
+              웹사이트
+              <input name="website" tabIndex="-1" autoComplete="off" />
+            </label>
+          </div>
           <div className="form-row">
             <label>
               회사명 / 이름
@@ -437,16 +476,19 @@ export default function Home() {
           </label>
           <div className="form-submit-row">
             <label className="privacy-check">
-              <input type="checkbox" required />
+              <input type="checkbox" name="privacy" value="agreed" required />
               개인정보 수집 및 이용에 동의합니다.
             </label>
-            <button className="submit" type="submit">
-              문의 보내기 <ArrowIcon />
+            <button className="submit" type="submit" disabled={formStatus === 'sending'}>
+              {formStatus === 'sending' ? '전송 중...' : '문의 보내기'} <ArrowIcon />
             </button>
           </div>
-          {sent && (
-            <p className="success" role="status">
-              문의 내용이 화면에서 확인되었습니다. 실제 메일 발송은 API 연결 후 활성화됩니다.
+          {formMessage && (
+            <p
+              className={`form-feedback ${formStatus}`}
+              role={formStatus === 'error' ? 'alert' : 'status'}
+            >
+              {formMessage}
             </p>
           )}
         </form>

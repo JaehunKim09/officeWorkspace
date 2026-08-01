@@ -24,6 +24,16 @@ npm run dev
 
 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인합니다.
 
+## 문의 메일 설정
+
+문의 양식은 Next.js 서버 API를 통해 `kknuhet@naver.com`으로 발송됩니다. 먼저 `.env.example`을 복사해 `.env.local`을 만들고 `SMTP_PASS`에 네이버 애플리케이션 비밀번호를 입력하세요.
+
+```bash
+Copy-Item .env.example .env.local
+```
+
+네이버 로그인에서 2단계 인증과 애플리케이션 비밀번호를 설정하고, 네이버 메일의 `환경설정 > POP3/IMAP 설정 > IMAP/SMTP 설정`에서 SMTP 사용을 활성화해야 합니다. `.env.local`은 Git에 포함되지 않습니다.
+
 ## 빌드 확인
 
 ```bash
@@ -33,7 +43,7 @@ npm run start
 
 ## 실제 서비스 전 체크리스트
 
-- 현재 문의 양식은 데모입니다. 실제 메일 발송이나 데이터 저장을 위해서는 API, Google Sheet, Notion, Airtable, Naver Form 등으로 연결해야 합니다.
+- 문의 메일 발송 전 네이버 SMTP 연결과 실제 수신 여부를 확인하세요.
 - 가격표와 제작 기간은 `homepage-business-plan.md`의 초기 가정을 바탕으로 한 예시입니다.
 - 고객사 실정보다 샘플 데이터를 먼저 사용하고, 공개 전 상호명/주소/사업자번호/연락처를 반드시 교체하세요.
 - 배포 전 도메인, analytics, Search Console, favicon, Open Graph 이미지를 연결하세요.
