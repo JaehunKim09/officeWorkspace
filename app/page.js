@@ -1,44 +1,38 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const navigation = [
   { id: 'home', label: '메인' },
   { id: 'about', label: '회사소개' },
   { id: 'service', label: '서비스' },
   { id: 'portfolio', label: '포트폴리오' },
-  { id: 'notice', label: '공지사항' },
+  { id: 'guide', label: '제작안내' },
   { id: 'contact', label: '문의하기' },
 ];
 
 const notices = [
   {
     id: 1,
-    category: '공지',
-    title: 'NOVA 공식 홈페이지를 새롭게 오픈했습니다.',
-    date: '2026.08.01',
-    content: 'NOVA의 새로운 소식과 비전을 더 편리하게 만나보실 수 있도록 공식 홈페이지를 새롭게 단장했습니다. 앞으로 다양한 소식으로 찾아뵙겠습니다.',
+    category: '준비',
+    title: '홈페이지 제작 전에 어떤 자료가 필요한가요?',
+    date: '2026.08.11',
+    content: '회사 소개, 서비스 설명, 로고, 연락처, 사용할 사진을 준비하면 제작이 빠르게 진행됩니다. 자료가 부족한 경우에는 상담을 통해 필요한 내용을 먼저 정리할 수 있습니다.',
   },
   {
     id: 2,
-    category: '채용',
-    title: '2026년 하반기 신입·경력 공개채용 안내',
-    date: '2026.07.24',
-    content: '더 나은 내일을 함께 만들어 갈 새로운 동료를 기다립니다. 자세한 모집 직군과 지원 일정은 채용 담당자에게 문의해 주세요.',
+    category: '비용',
+    title: '도메인과 호스팅 비용은 제작비에 포함되나요?',
+    date: '2026.08.11',
+    content: '도메인, 호스팅, 외부 유료 서비스 비용은 제작비와 구분해 안내합니다. 실제 운영 주체와 예상 사용량에 맞는 서비스를 선택할 수 있도록 상담 단계에서 필요한 항목을 설명합니다.',
   },
   {
     id: 3,
-    category: '소식',
-    title: 'NOVA, 디지털 혁신 파트너십 체결',
-    date: '2026.07.11',
-    content: 'NOVA가 산업 전반의 디지털 전환을 가속하기 위한 전략적 파트너십을 체결했습니다. 양사의 전문성을 바탕으로 새로운 고객 경험을 만들어 갈 예정입니다.',
-  },
-  {
-    id: 4,
-    category: '공지',
-    title: '고객센터 운영시간 변경 안내',
-    date: '2026.06.28',
-    content: '더 안정적인 상담을 위해 고객센터 운영시간이 평일 오전 9시부터 오후 6시까지로 변경됩니다. 주말과 공휴일은 휴무입니다.',
+    category: '진행',
+    title: '제작 범위와 수정 요청은 어떻게 정하나요?',
+    date: '2026.08.11',
+    content: '페이지 수, 제공 기능, 수정 횟수와 일정을 작업 전에 문서로 정리합니다. 확정된 범위를 벗어나는 추가 요청은 일정과 비용을 먼저 안내한 뒤 진행합니다.',
   },
 ];
 
@@ -262,12 +256,12 @@ export default function Home() {
             <span>CONNECT</span>
           </div>
           <div className="visual-card card-project">
-            <span>PROJECTS</span>
-            <strong>180+</strong>
+            <span>SERVICE</span>
+            <strong>WEB</strong>
           </div>
           <div className="visual-card card-since">
-            <span>SINCE</span>
-            <strong>2014</strong>
+            <span>FOCUS</span>
+            <strong>GROWTH</strong>
           </div>
         </div>
 
@@ -290,22 +284,22 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="stats" aria-label="회사 주요 현황">
+        <div className="stats" aria-label="서비스 제공 원칙">
           <div>
-            <strong>12<span>+</span></strong>
-            <p>함께한 시간</p>
+            <strong>반응형</strong>
+            <p>모바일·데스크톱 대응</p>
           </div>
           <div>
-            <strong>180<span>+</span></strong>
-            <p>완료 프로젝트</p>
+            <strong>명확성</strong>
+            <p>범위와 비용 사전 안내</p>
           </div>
           <div>
-            <strong>96<span>%</span></strong>
-            <p>고객 만족도</p>
+            <strong>전환</strong>
+            <p>문의 중심 동선 설계</p>
           </div>
           <div>
-            <strong>42<span>명</span></strong>
-            <p>전문 구성원</p>
+            <strong>관리</strong>
+            <p>공개 후 유지관리</p>
           </div>
         </div>
 
@@ -382,14 +376,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="notice" className="section notice">
-        <div className="section-label">04&nbsp;&nbsp; NEWS &amp; NOTICE</div>
+      <section id="guide" className="section notice">
+        <div className="section-label">04&nbsp;&nbsp; SERVICE GUIDE</div>
         <div className="notice-heading">
           <div>
-            <h2>NOVA의 새로운 소식</h2>
-            <p>우리의 변화와 성장 이야기를 전합니다.</p>
+            <h2>홈페이지 제작 안내</h2>
+            <p>상담 전에 많이 궁금해하는 내용을 정리했습니다.</p>
           </div>
-          <span className="notice-count">LATEST NEWS · {String(notices.length).padStart(2, '0')}</span>
+          <span className="notice-count">GUIDES · {String(notices.length).padStart(2, '0')}</span>
         </div>
 
         <div className="notice-list">
@@ -428,8 +422,6 @@ export default function Home() {
           <div className="contact-info">
             <span>EMAIL</span>
             <a href="mailto:kknuhet@naver.com">kknuhet@naver.com</a>
-            <span>PHONE</span>
-            <a href="tel:+82212345678">02. 1234. 5678</a>
           </div>
         </div>
 
@@ -474,11 +466,20 @@ export default function Home() {
             문의 내용
             <textarea required name="message" rows="4" placeholder="문의하실 내용을 자유롭게 작성해 주세요" />
           </label>
+          <div className="privacy-summary" id="privacy-summary">
+            <strong>개인정보 수집·이용 안내</strong>
+            <p>수집 항목: 회사명/이름, 이메일, 문의 유형, 문의 내용</p>
+            <p>이용 목적: 문의 확인 및 답변</p>
+            <p>보유 기간: 문의 처리 완료일로부터 1년</p>
+          </div>
           <div className="form-submit-row">
-            <label className="privacy-check">
-              <input type="checkbox" name="privacy" value="agreed" required />
-              개인정보 수집 및 이용에 동의합니다.
-            </label>
+            <div className="privacy-consent">
+              <label className="privacy-check">
+                <input type="checkbox" name="privacy" value="agreed" aria-describedby="privacy-summary" required />
+                개인정보 수집 및 이용에 동의합니다.
+              </label>
+              <Link className="privacy-link" href="/privacy">개인정보처리방침 보기</Link>
+            </div>
             <button className="submit" type="submit" disabled={formStatus === 'sending'}>
               {formStatus === 'sending' ? '전송 중...' : '문의 보내기'} <ArrowIcon />
             </button>
@@ -497,12 +498,12 @@ export default function Home() {
       <footer>
         <div className="footer-logo">NOVA.</div>
         <p>
-          서울특별시 강남구 테헤란로 123, NOVA Tower
+          홈페이지 제작·유지관리
           <br />
-          사업자등록번호 123-45-67890
+          kknuhet@naver.com
         </p>
         <div className="footer-right">
-          <span>개인정보처리방침&nbsp;&nbsp; 이용약관</span>
+          <Link href="/privacy">개인정보처리방침</Link>
           <small>© 2026 NOVA. ALL RIGHTS RESERVED.</small>
         </div>
       </footer>

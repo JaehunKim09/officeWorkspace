@@ -19,10 +19,10 @@ Node.js 20.9 이상이 필요합니다.
 
 ```bash
 npm install
-npm run dev
+npm run dev -- -p 3001
 ```
 
-브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인합니다.
+브라우저에서 [http://localhost:3001](http://localhost:3001)을 열어 확인합니다.
 
 ## 문의 메일 설정
 
@@ -45,7 +45,8 @@ npm run start
 
 - 문의 메일 발송 전 네이버 SMTP 연결과 실제 수신 여부를 확인하세요.
 - 가격표와 제작 기간은 `homepage-business-plan.md`의 초기 가정을 바탕으로 한 예시입니다.
-- 고객사 실정보다 샘플 데이터를 먼저 사용하고, 공개 전 상호명/주소/사업자번호/연락처를 반드시 교체하세요.
+- 현재 화면에는 확인되지 않은 실적·주소·사업자번호·전화번호를 표시하지 않습니다. 실제 운영 정보를 확정한 뒤 검증된 값만 추가하세요.
+- 개인정보 문의 메일은 처리 완료 후 1년을 기준으로 삭제하고, 운영 주체나 보관기간이 바뀌면 `/privacy` 내용도 함께 수정하세요.
 - 배포 전 도메인, analytics, Search Console, favicon, Open Graph 이미지를 연결하세요.
 
 ## 추천 확장 방향
