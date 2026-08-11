@@ -64,24 +64,17 @@ const packages = [
   {
     name: 'Basic',
     target: '소상공인·1인 사업자',
-    price: '80만~150만 원',
+    price: '20만원 ~',
     period: '7~14일',
     features: ['5페이지 내외', '모바일 반응형', '회사/서비스/위치/문의 구성', '기본 SEO 설정'],
   },
   {
     name: 'Business',
     target: '병원·학원·전문 서비스',
-    price: '200만~400만 원',
+    price: '20만원 ~',
     period: '2~4주',
-    features: ['10페이지 내외', '맞춤형 섹션', '상담·예약 문의 흐름', '방문자 분석 도구 연동'],
+    features: ['10페이지 내외', '맞춤형 섹션', '상담·문의 흐름', '방문자 분석 도구 연동'],
     featured: true,
-  },
-  {
-    name: 'Functional',
-    target: '예약·결제·쇼핑몰',
-    price: '별도 견적',
-    period: '4~8주',
-    features: ['상품/주문 관리', '외부 서비스 연동', '자동 알림', '업무 흐름 맞춤 개발'],
   },
 ];
 
