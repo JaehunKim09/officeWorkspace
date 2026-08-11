@@ -88,9 +88,30 @@ const processSteps = [
 ];
 
 const portfolioItems = [
-  { industry: 'Company', title: 'NOVA 회사소개 샘플', description: '신뢰도와 브랜드 이미지를 강조하는 기업형 랜딩페이지입니다.' },
-  { industry: 'Clinic', title: '병원·클리닉 템플릿 예정', description: '진료과목, 의료진, 상담 신청 흐름을 중심으로 확장할 수 있습니다.' },
-  { industry: 'Restaurant', title: '식당·카페 템플릿 예정', description: '메뉴, 위치, 예약 CTA, 네이버 플레이스 연결을 빠르게 구성합니다.' },
+  {
+    industry: 'Company',
+    title: 'NOVA 회사소개 샘플',
+    description: '서비스, 제작 절차, 포트폴리오와 문의 흐름을 담은 기업형 홈페이지입니다.',
+    links: [{ label: '현재 샘플', href: '#home' }],
+  },
+  {
+    industry: 'Clinic',
+    title: '라온케어 병원 샘플',
+    description: '핵심 진료 정보 중심의 5페이지형과 상세 안내를 더한 10페이지형을 비교할 수 있습니다.',
+    links: [
+      { label: 'Basic 5', href: 'https://raon-care-clinic.vercel.app' },
+      { label: 'Business 10', href: 'https://raon-care-clinic.vercel.app/business' },
+    ],
+  },
+  {
+    industry: 'Academy',
+    title: '리브레인 학원 샘플',
+    description: '교육 핵심 정보 중심의 5페이지형과 과정·관리 내용을 확장한 10페이지형을 비교할 수 있습니다.',
+    links: [
+      { label: 'Basic 5', href: 'https://rebrain.vercel.app' },
+      { label: 'Business 10', href: 'https://rebrain.vercel.app/business' },
+    ],
+  },
 ];
 
 const faqs = [
@@ -349,12 +370,12 @@ export default function Home() {
       </section>
 
       <section id="portfolio" className="section portfolio">
-        <div className="section-label">03&nbsp;&nbsp; PORTFOLIO ROADMAP</div>
+        <div className="section-label">03&nbsp;&nbsp; PORTFOLIO SAMPLES</div>
         <div className="portfolio-heading">
           <h2>
-            업종별 샘플을 쌓아
+            업종별 Basic과 Business를
             <br />
-            바로 보여줄 수 있는 포트폴리오로 만듭니다.
+            직접 비교해 보세요.
           </h2>
           <button className="text-button" onClick={() => goTo('contact')}>샘플 제작 문의</button>
         </div>
@@ -364,6 +385,23 @@ export default function Home() {
               <span>{item.industry}</span>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
+              <div className="portfolio-links">
+                {item.links.map((link) => {
+                  const external = link.href.startsWith('http');
+
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target={external ? '_blank' : undefined}
+                      rel={external ? 'noreferrer' : undefined}
+                      aria-label={external ? `${item.title} ${link.label} 새 창에서 보기` : undefined}
+                    >
+                      {link.label} <ArrowIcon />
+                    </a>
+                  );
+                })}
+              </div>
             </article>
           ))}
         </div>
