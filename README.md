@@ -32,7 +32,9 @@ npm run dev -- -p 3001
 Copy-Item .env.example .env.local
 ```
 
-네이버 로그인에서 2단계 인증과 애플리케이션 비밀번호를 설정하고, 네이버 메일의 `환경설정 > POP3/IMAP 설정 > IMAP/SMTP 설정`에서 SMTP 사용을 활성화해야 합니다. `.env.local`은 Git에 포함되지 않습니다.
+네이버 로그인에서 2단계 인증과 애플리케이션 비밀번호를 설정하고, 네이버 메일의 `환경설정 > POP3/IMAP 설정 > POP3/SMTP 설정`에서 `사용함`을 선택해야 합니다. 네이버 SMTP는 SSL 포트 `465`를 사용합니다. `.env.local`은 Git에 포함되지 않습니다.
+
+Vercel 운영 환경에도 `.env.example`의 변수들을 등록한 뒤 다시 배포해야 합니다. 특히 `SMTP_PASS`는 Sensitive 값으로 저장하세요.
 
 ## 빌드 확인
 

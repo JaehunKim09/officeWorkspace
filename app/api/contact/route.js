@@ -2,7 +2,8 @@ import nodemailer from 'nodemailer';
 
 export const runtime = 'nodejs';
 
-const CONTACT_EMAIL = process.env.CONTACT_TO_EMAIL || 'kknuhet@naver.com';
+const DEFAULT_CONTACT_EMAIL = 'kknuhet@naver.com';
+const CONTACT_EMAIL = process.env.CONTACT_TO_EMAIL?.trim() || DEFAULT_CONTACT_EMAIL;
 const MAX_REQUEST_BYTES = 20_000;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const INQUIRY_TYPES = {
@@ -28,13 +29,22 @@ function escapeHtml(value) {
 }
 
 function getMailConfig() {
-  const host = process.env.SMTP_HOST?.trim();
-  const user = process.env.SMTP_USER?.trim();
-  const pass = process.env.SMTP_PASS;
-  const port = Number(process.env.SMTP_PORT || 587);
-  const secure = process.env.SMTP_SECURE === 'true';
+  const host = process.env.SMTP_HOST?.trim() || 'smtp.naver.com';
+  const user = process.env.SMTP_USER?.trim() || DEFAULT_CONTACT_EMAIL;
+  const pass = process.env.SMTP_PASS?.trim();
+  const port = Number(process.env.SMTP_PORT || 465);
+  const secureSetting = process.env.SMTP_SECURE?.trim().toLowerCase();
+  const secure = secureSetting ? secureSetting === 'true' : port === 465;
+  const validSecureSetting = !secureSetting || ['true', 'false'].includes(secureSetting);
+  const validPort = Number.isInteger(port) && port > 0 && port <= 65_535;
 
-  if (!host || !user || !pass || !Number.isInteger(port)) {
+  if (!pass || !validPort || !validSecureSetting) {
+    console.error('Contact email configuration is invalid', {
+      missing: pass ? [] : ['SMTP_PASS'],
+      invalidPort: !validPort,
+      invalidSecureSetting: !validSecureSetting,
+    });
+
     return null;
   }
 
@@ -45,6 +55,7 @@ function getMailConfig() {
       secure,
       requireTLS: !secure,
       auth: { user, pass },
+      tls: { minVersion: 'TLSv1.2' },
       connectionTimeout: 10_000,
       greetingTimeout: 10_000,
       socketTimeout: 15_000,
@@ -90,15 +101,37 @@ export async function POST(request) {
   const message = cleanText(body.message, 3_000);
   const privacy = cleanText(body.privacy, 20);
 
-  if (
-    !name ||
-    !EMAIL_PATTERN.test(email) ||
-    !INQUIRY_TYPES[type] ||
-    message.length < 5 ||
-    privacy !== 'agreed'
-  ) {
+  if (!name) {
     return Response.json(
-      { message: '입력한 내용을 다시 확인해 주세요.' },
+      { field: 'name', message: '회사명 또는 이름을 입력해 주세요.' },
+      { status: 400 },
+    );
+  }
+
+  if (!EMAIL_PATTERN.test(email)) {
+    return Response.json(
+      { field: 'email', message: '답변받을 이메일 주소를 확인해 주세요.' },
+      { status: 400 },
+    );
+  }
+
+  if (!INQUIRY_TYPES[type]) {
+    return Response.json(
+      { field: 'type', message: '문의 유형을 선택해 주세요.' },
+      { status: 400 },
+    );
+  }
+
+  if (message.length < 5) {
+    return Response.json(
+      { field: 'message', message: '문의 내용은 5자 이상 입력해 주세요.' },
+      { status: 400 },
+    );
+  }
+
+  if (privacy !== 'agreed') {
+    return Response.json(
+      { field: 'privacy', message: '개인정보 수집 및 이용에 동의해 주세요.' },
       { status: 400 },
     );
   }

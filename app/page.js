@@ -196,7 +196,17 @@ export default function Home() {
       const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(result.message || '문의 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+        const invalidField = result.field
+          ? form.elements.namedItem(result.field)
+          : null;
+
+        if (invalidField instanceof HTMLElement) {
+          invalidField.focus();
+        }
+
+        setFormStatus('error');
+        setFormMessage(result.message || '문의 전송에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+        return;
       }
 
       form.reset();
@@ -476,11 +486,11 @@ export default function Home() {
           <div className="form-row">
             <label>
               회사명 / 이름
-              <input required name="name" placeholder="회사명 또는 이름을 입력해 주세요" />
+              <input required name="name" maxLength="80" placeholder="회사명 또는 이름을 입력해 주세요" />
             </label>
             <label>
               이메일
-              <input required type="email" name="email" placeholder="답변받을 이메일을 입력해 주세요" />
+              <input required type="email" name="email" maxLength="160" autoComplete="email" placeholder="답변받을 이메일을 입력해 주세요" />
             </label>
           </div>
           <label>
@@ -495,7 +505,7 @@ export default function Home() {
           </label>
           <label>
             문의 내용
-            <textarea required name="message" rows="4" placeholder="문의하실 내용을 자유롭게 작성해 주세요" />
+            <textarea required name="message" rows="4" minLength="5" maxLength="3000" placeholder="문의하실 내용을 5자 이상 작성해 주세요" />
           </label>
           <div className="privacy-summary" id="privacy-summary">
             <strong>개인정보 수집·이용 안내</strong>
