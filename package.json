@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke": "node scripts/smoke-test.mjs",
+    "verify": "npm run lint && npm test && npm run build"
   },
   "engines": {
     "node": ">=20.9.0"
@@ -15,5 +20,10 @@
     "nodemailer": "^9.0.5",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.1",
+    "vitest": "^4.1.10"
   }
 }

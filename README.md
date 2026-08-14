@@ -57,3 +57,29 @@ npm run start
 2. 식당/카페, 병원/클리닉, 학원, 전문직 템플릿 추가
 3. 문의 폼을 실제 CRM 또는 메일 수신처와 연결
 4. 견적서·계약서·자료수집 양식까지 템플릿화
+
+## 자동 품질 및 배포 검증
+
+GitHub Actions의 `Quality and production smoke tests` 워크플로가 다음 검사를 수행합니다.
+
+- Pull Request와 `main` 푸시: ESLint, 문의 API 단위 테스트, Next.js 프로덕션 빌드
+- Vercel 빌드: 같은 검사를 모두 통과한 배포만 생성하도록 `npm run verify` 실행
+- `main` 푸시: Vercel 운영 배포의 커밋이 갱신될 때까지 기다린 뒤 홈페이지, 개인정보처리방침, 문의 API 검증
+- 문의 API 운영 점검은 빈 요청의 유효성 검사만 확인하므로 실제 문의 메일을 발송하지 않음
+
+로컬에서는 아래 명령으로 같은 품질 검사를 실행할 수 있습니다.
+
+```bash
+npm run lint
+npm test
+npm run build
+npm run verify
+```
+
+로컬 서버를 실행한 상태에서는 운영 점검 스크립트도 확인할 수 있습니다.
+
+```bash
+npm run smoke -- http://127.0.0.1:3000
+```
+
+첫 워크플로 실행이 성공한 뒤 GitHub 브랜치 규칙에서 `Lint, test, and build`를 필수 검사로 지정하면 실패한 변경이 `main`에 병합되는 것을 막을 수 있습니다.

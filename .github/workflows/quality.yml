@@ -1,0 +1,67 @@
+name: Quality and production smoke tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint, test, and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test contact API
+        run: npm test
+
+      - name: Build production bundle
+        run: npm run build
+
+  production-smoke:
+    name: Verify production deployment
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Wait for Vercel and run smoke checks
+        env:
+          SMOKE_BASE_URL: https://office-workspace-orcin.vercel.app
+          EXPECTED_COMMIT_SHA: ${{ github.sha }}
+          SMOKE_RETRIES: "30"
+          SMOKE_RETRY_DELAY_MS: "10000"
+        run: npm run smoke
